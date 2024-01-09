@@ -4,10 +4,17 @@ module.exports = (sequelize, DataTypes) => {
     status:{
         type: DataTypes.STRING,
         allowNull: false
-    }
+    },
+    // eventId:{
+    //     type: DataTypes.STRING,
+    //     allowNull: false,
+    //     primaryKey: true
+    // }
 }, {
     // Other model options go here
 });
+EventMemberRelModel.removeAttribute('id');
+
 
 return EventMemberRelModel;
 }

@@ -9,17 +9,17 @@ const sequelize = new Sequelize(process.env.LOCALURI,{
 })
 
 const db = {};
-const client = {
-  query: async (query, params, user_id = null, callback = null) => {
-    const _ = await sequelize.authenticate();
+// const client = {
+//   query: async (query, params, user_id = null, callback = null) => {
+//     const _ = await sequelize.authenticate();
     
-    db.Sequelize = Sequelize;
-    db.sequelize = sequelize;
+//     db.Sequelize = Sequelize;
+//     db.sequelize = sequelize;
 
-    db.Models = require("./Models")(sequelize, DataTypes)
+//     db.Models = require("./Models")(sequelize, DataTypes)
     
-  },
-};
+//   },
+// };
 
 const connectDB = async function () {
   try {
@@ -37,16 +37,21 @@ const connectDB = async function () {
     db.EventMemberRelModel = require("../models/EventMemberRelModel")(sequelize, DataTypes)
 
     //relations
-    db.OrganizerModel.hasMany(db.MemberModel);
-    db.OrganizerModel.hasMany(db.EventModel);
-    db.EventCategoryModel.hasMany(db.EventModel);
-    db.EventModel.hasMany(db.EventMemberRelModel);
-    db.MemberModel.hasMany(db.EventMemberRelModel);
+    db.OrganizerModel.hasMany(db.MemberModel, { onDelete: 'cascade' });
+    db.OrganizerModel.hasMany(db.EventModel, { onDelete: 'cascade' });
+    db.EventCategoryModel.hasMany(db.EventModel, { onDelete: 'cascade' });
+    db.EventModel.hasMany(db.EventMemberRelModel, { onDelete: 'cascade' });
+    db.MemberModel.hasMany(db.EventMemberRelModel, { onDelete: 'cascade' });
 
     sequelize.sync({ force: true })
+    // sequelize.sync({ alter: true })
   } catch (error) {
     console.log("Error in connecting to the database .", error);
   }
 };
 
-module.exports = { sequelize, connectDB, client, db };
+module.exports = { 
+  sequelize, 
+  connectDB, 
+  // client, 
+  db };
