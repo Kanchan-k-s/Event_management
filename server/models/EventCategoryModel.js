@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
     EventCategoryModel = sequelize.define('eventCategory', {
     name: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
 }, {
     // Other model options go here

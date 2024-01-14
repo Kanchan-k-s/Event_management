@@ -1,20 +1,19 @@
 module.exports = (sequelize, DataTypes) => {
-    let EventMemberRelModel = {};
-    EventMemberRelModel = sequelize.define('eventMemberRel', {
-    status:{
+  let EventMemberRelModel = {};
+  EventMemberRelModel = sequelize.define(
+    "eventMemberRel",
+    {
+      //ratings given
+      status: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+      },
     },
-    // eventId:{
-    //     type: DataTypes.STRING,
-    //     allowNull: false,
-    //     primaryKey: true
-    // }
-}, {
-    // Other model options go here
-});
-EventMemberRelModel.removeAttribute('id');
+    {
+      // Other model options go here
+    }
+  );
+  EventMemberRelModel.removeAttribute("id");
 
-
-return EventMemberRelModel;
-}
+  return EventMemberRelModel;
+};
