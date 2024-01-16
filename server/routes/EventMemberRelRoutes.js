@@ -10,7 +10,7 @@ router.get("/member/:id", eventMemberRel.memberEvents);
 
 // router.delete("/delete/:id", eventMemberRel.del);
 
-router.put("/update/:id", eventMemberRel.update);
+router.put("/update/:eventId/:memberId", eventMemberRel.update);
 
 router.post("/cancel", eventMemberRel.del);
 

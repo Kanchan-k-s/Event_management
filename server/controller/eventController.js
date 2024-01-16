@@ -37,7 +37,7 @@ const add = async (req, res) => {
 
 const showByOrganizer = async (req, res) => {
   const Event = db.EventModel;
-  console.log(req.params.id);
+  // console.log(req.params.id);
   try {
     const result = await Event.findAll({where: {organizerId: req.params.id}});
 
@@ -58,7 +58,7 @@ const show = async (req, res) => {
 
   try {
     const result = await Event.findAll();
-
+    // console.log(result);
     res.status(200).json({
       success: true,
       result,
@@ -74,6 +74,7 @@ const show = async (req, res) => {
 const update = async (req, res) => {
   const Event = db.EventModel;
   try {
+    // console.log(req.body);
     const data = await Event.findOne({where: {id: req.params.id}});
     if (data) {
       const result = await Event.update(req.body, {
@@ -90,6 +91,7 @@ const update = async (req, res) => {
       });
     }
   } catch (e) {
+    console.log(e);
     res.status(500).json({
       success: false,
       errors: [{msg: "Server error"}],

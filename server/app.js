@@ -23,12 +23,12 @@ app.use(cors());
 
 app.get("/hi", async (req, res) => {});
 
-io.on("connection", (socket) => {
-  socket.on("sendMessage", (message, callback) => {
-    console.log("Received");
-  });
-  console.log("a user connected");
-});
+// io.on("connection", (socket) => {
+//   socket.on("sendMessage", (message, callback) => {
+//     console.log("Received");
+//   });
+//   console.log("a user connected");
+// });
 
 app.use("/organizer", organizer);
 app.use("/member", member);

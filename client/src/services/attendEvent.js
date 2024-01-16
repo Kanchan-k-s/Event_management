@@ -7,6 +7,12 @@ export default {
   getAllEvents() {
     return api.get("/event/show");
   },
+  updateEventRel(body) {
+    return api.post(
+      "/relation/update/" + body.eventId + "/" + body.memberId,
+      body
+    );
+  },
   attendEvent(body) {
     return api.post("/relation/add", body);
   },

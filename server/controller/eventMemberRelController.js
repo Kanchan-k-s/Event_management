@@ -26,10 +26,7 @@ const add = async (req, res) => {
           where: {id: query.eventId},
         });
       //checks that the date falls in the follow block
-      // rel.start_date on or after the start_date and on or before the end_date
-      // rel.end_date is on or after the startDate and on or before the endDate
-      // It checks that the rel.start_date is on or before the startDate,
-      // and the rel.end_date is on or after the specified endDate
+
       const resultCheck = await checkSlot(
         query.memberId,
         start_date,
@@ -44,17 +41,45 @@ const add = async (req, res) => {
           eventId: query.eventId,
           memberId: query.memberId,
           status: "enganged",
+          priority: query.priority,
         };
         const result = await EventMemberRel.create(fields);
+        // console.log(result);
+        // const result2 = await EventMemberRel.findOne(addresult)
         res.status(200).json({
           success: true,
           result,
         });
       } else {
-        res.status(200).json({
-          success: false,
-          msg: "You are engaged in another event at the same time",
+        // console.log(resultCheck);
+        let flag = 0;
+        resultCheck.forEach((ele) => {
+          if (ele.priority < query.priority) {
+            flag = 1;
+          } else {
+            flag = 0;
+          }
         });
+        if (flag === 1) {
+          const fields = {
+            eventId: query.eventId,
+            memberId: query.memberId,
+            status: "enganged",
+            priority: query.priority,
+          };
+          const result = await EventMemberRel.create(fields);
+          // console.log(result);
+          // const result2 = await EventMemberRel.findOne(addresult)
+          res.status(200).json({
+            success: true,
+            result,
+          });
+        } else {
+          res.status(200).json({
+            success: false,
+            msg: "You are engaged in another event at the same time",
+          });
+        }
       }
     } else {
       res.status(200).json({
@@ -76,7 +101,7 @@ const memberEvents = async (req, res) => {
   try {
     const result = await EventMemberRel.findAll({
       where: {memberId: req.params.id},
-      attributes: ["eventId"],
+      attributes: ["eventId", "priority"],
     });
     // console.log(result);
     res.status(200).json({
@@ -113,17 +138,27 @@ const show = async (req, res) => {
 const update = async (req, res) => {
   const EventMemberRel = db.EventMemberRelModel;
   try {
-    const data = await EventMemberRel.findOne({where: {id: req.params.id}});
+    const data = await EventMemberRel.findOne({
+      where: {
+        [Op.and]: [
+          {eventId: req.params.eventId, memberId: req.params.memberId},
+        ],
+      },
+    });
     if (data) {
       const result = await EventMemberRel.update(req.body, {
-        where: {id: req.params.id},
+        where: {eventId: req.params.eventId, memberId: req.params.memberId},
       });
       res.status(200).json({
         success: true,
         result,
       });
+    } else {
+      res.status(200).json({
+        success: false,
+        msg: "Can't find relation",
+      });
     }
-    return "No such Id present";
   } catch (e) {
     res.status(500).json({
       success: false,

@@ -172,12 +172,18 @@
           });
       },
       getAllmember() {
-        member.getAllMember(this.id).then((res) => {
-          if (res.data.success) {
-            console.log(res.data.result);
-            this.members = res.data.result;
-          }
-        });
+        member
+          .getAllMember(this.id)
+          .then((res) => {
+            if (res.data.success) {
+              console.log(res.data.result);
+              this.members = res.data.result;
+            }
+          })
+          .catch((err) => {
+            console.log(err.message);
+            this.$toast.error(err.message);
+          });
       },
       updatemember(item, index) {
         this.member = item;

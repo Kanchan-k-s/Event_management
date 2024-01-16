@@ -7,14 +7,15 @@
       >
     </div>
 
+    <v-select
+      label="Select Organizer"
+      :items="organizers"
+      item-title="name"
+      item-value="id"
+      v-model="value"
+    ></v-select>
+
     <div class="input-group mb-3">
-      <v-select
-        label="Select Organizer"
-        :items="organizers"
-        item-title="name"
-        item-value="id"
-        v-model="value"
-      ></v-select>
       <button
         class="btn btn-primary h-20"
         @click="goToOrganizer"
@@ -23,7 +24,6 @@
         Go to Organizer
       </button>
     </div>
-
     <v-select
       label="Select Member"
       :items="members"
